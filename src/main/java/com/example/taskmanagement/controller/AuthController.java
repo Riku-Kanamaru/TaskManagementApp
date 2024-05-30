@@ -2,7 +2,6 @@ package com.example.taskmanagement.controller;
 
 import com.example.taskmanagement.entity.UserEntity;
 import com.example.taskmanagement.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,12 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AuthController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
-    
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/login")
@@ -32,8 +28,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute UserEntity user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
+
+        // デバッグログを追加
+        System.out.println("User registered: " + user.getUsername());
+
         return "redirect:/login";
     }
 }

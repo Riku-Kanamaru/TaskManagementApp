@@ -27,5 +27,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // ユーザー登録メソッド
+    public UserEntity registerUser(String username, String email, String password) {
+        UserEntity user = new UserEntity();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password); // パスワードをそのまま保存
+
+        return save(user);
+    }
+
     // その他のメソッドを必要に応じて追加
 }
